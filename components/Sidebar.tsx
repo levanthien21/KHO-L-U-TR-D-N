@@ -41,10 +41,10 @@ export function Sidebar() {
       <div className="px-4 py-2 flex-1 relative z-10">
         <Link href="/" className="flex items-center pl-2 mb-14 group">
           <div className="relative w-9 h-9 mr-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:shadow-indigo-500/50 transition-all duration-300">
-            F
+            N
           </div>
           <h1 className="text-xl font-bold tracking-tight">
-            Freelance<span className="text-indigo-600">Dash</span>
+            Nexos<span className="text-indigo-600">Solutions</span>
           </h1>
         </Link>
         <div className="space-y-2">
