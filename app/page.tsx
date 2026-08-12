@@ -49,35 +49,44 @@ export default function Dashboard() {
       </motion.div>
       
       <motion.div variants={container} className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <motion.div variants={item} className="premium-glow group">
-          <Card className="glass-panel border-none h-full transition-transform duration-300 group-hover:-translate-y-1">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-indigo-700 uppercase tracking-wider">Dự án đang chạy</CardTitle>
+        <motion.div variants={item}>
+          <Card className="glass-panel border-none h-full rounded-2xl transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+            <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
+              <CardTitle className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Dự án đang chạy</CardTitle>
+              <div className="h-10 w-10 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold text-foreground tracking-tight">{totalActive}</div>
+              <div className="text-4xl font-bold text-slate-800 tracking-tight">{totalActive}</div>
             </CardContent>
           </Card>
         </motion.div>
         
-        <motion.div variants={item} className="premium-glow group">
-          <Card className="glass-panel border-none h-full transition-transform duration-300 group-hover:-translate-y-1">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-emerald-700 uppercase tracking-wider">Dự án hoàn thành</CardTitle>
+        <motion.div variants={item}>
+          <Card className="glass-panel border-none h-full rounded-2xl transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+            <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
+              <CardTitle className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Dự án hoàn thành</CardTitle>
+              <div className="h-10 w-10 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold text-foreground tracking-tight">{totalCompleted}</div>
+              <div className="text-4xl font-bold text-slate-800 tracking-tight">{totalCompleted}</div>
             </CardContent>
           </Card>
         </motion.div>
 
-        <motion.div variants={item} className="premium-glow group">
-          <Card className="glass-panel border-none h-full transition-transform duration-300 group-hover:-translate-y-1">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-rose-700 uppercase tracking-wider">Tiền chưa thu</CardTitle>
+        <motion.div variants={item}>
+          <Card className="glass-panel border-none h-full rounded-2xl transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+            <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
+              <CardTitle className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Tiền chưa thu</CardTitle>
+              <div className="h-10 w-10 bg-rose-50 text-rose-600 rounded-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold text-foreground tracking-tight">{totalPendingPayments.toLocaleString("vi-VN")} <span className="text-2xl text-muted-foreground font-normal">₫</span></div>
+              <div className="text-4xl font-bold text-slate-800 tracking-tight">{totalPendingPayments.toLocaleString("vi-VN")} <span className="text-2xl text-slate-400 font-normal">₫</span></div>
             </CardContent>
           </Card>
         </motion.div>
@@ -85,23 +94,23 @@ export default function Dashboard() {
 
       <motion.div variants={item}>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-foreground tracking-tight">Sắp đến hạn & Quá hạn</h2>
+          <h2 className="text-2xl font-bold text-slate-800 tracking-tight">Sắp đến hạn & Quá hạn</h2>
         </div>
-        <Card className="glass-panel border-none overflow-hidden">
+        <Card className="bg-white shadow-sm border border-slate-200 rounded-2xl overflow-hidden">
           <Table>
-            <TableHeader className="bg-muted/50">
-              <TableRow className="border-border hover:bg-transparent">
-                <TableHead className="text-muted-foreground font-medium">Tên dự án</TableHead>
-                <TableHead className="text-muted-foreground font-medium">Khách hàng</TableHead>
-                <TableHead className="text-muted-foreground font-medium">Số tiền</TableHead>
-                <TableHead className="text-muted-foreground font-medium">Hạn chót</TableHead>
-                <TableHead className="text-muted-foreground font-medium">Trạng thái</TableHead>
+            <TableHeader className="bg-slate-50 border-b border-slate-100">
+              <TableRow className="border-none hover:bg-transparent">
+                <TableHead className="text-slate-500 font-semibold uppercase text-xs tracking-wider h-12">Tên dự án</TableHead>
+                <TableHead className="text-slate-500 font-semibold uppercase text-xs tracking-wider h-12">Khách hàng</TableHead>
+                <TableHead className="text-slate-500 font-semibold uppercase text-xs tracking-wider h-12">Số tiền</TableHead>
+                <TableHead className="text-slate-500 font-semibold uppercase text-xs tracking-wider h-12">Hạn chót</TableHead>
+                <TableHead className="text-slate-500 font-semibold uppercase text-xs tracking-wider h-12">Trạng thái</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {upcomingProjects.length === 0 ? (
-                <TableRow className="border-border hover:bg-muted/30">
-                  <TableCell colSpan={5} className="text-center py-12 text-muted-foreground">
+                <TableRow className="border-b-0 hover:bg-slate-50/50">
+                  <TableCell colSpan={5} className="text-center py-16 text-slate-400">
                     Tuyệt vời! Không có dự án nào sắp đến hạn thanh toán.
                   </TableCell>
                 </TableRow>
@@ -111,11 +120,11 @@ export default function Dashboard() {
                   const isOverdue = isPast(dueDate) && !isToday(dueDate);
 
                   return (
-                    <TableRow key={project.id} className="border-border hover:bg-muted/30 transition-colors group">
-                      <TableCell className="font-semibold text-foreground">{project.name}</TableCell>
-                      <TableCell className="text-muted-foreground">{project.clientName}</TableCell>
-                      <TableCell className="text-foreground font-medium">{project.totalPrice.toLocaleString("vi-VN")} ₫</TableCell>
-                      <TableCell className={isOverdue ? "text-rose-600 font-semibold" : "text-muted-foreground"}>
+                    <TableRow key={project.id} className="border-b border-slate-100 hover:bg-slate-50/80 transition-colors group">
+                      <TableCell className="font-semibold text-slate-800 py-4">{project.name}</TableCell>
+                      <TableCell className="text-slate-600 py-4">{project.clientName}</TableCell>
+                      <TableCell className="text-slate-800 font-medium py-4">{project.totalPrice.toLocaleString("vi-VN")} ₫</TableCell>
+                      <TableCell className={isOverdue ? "text-rose-600 font-semibold py-4" : "text-slate-600 py-4"}>
                         {format(dueDate, "dd/MM/yyyy", { locale: vi })}
                       </TableCell>
                       <TableCell>

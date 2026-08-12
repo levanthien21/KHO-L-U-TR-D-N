@@ -37,10 +37,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="space-y-4 py-6 flex flex-col h-full glass-sidebar text-foreground shadow-2xl relative overflow-hidden">
-      {/* Decorative gradient orb */}
-      <div className="absolute top-0 left-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2" />
-      
+    <div className="space-y-4 py-6 flex flex-col h-full bg-white border-r border-slate-200 text-slate-700 relative overflow-hidden">
       <div className="px-4 py-2 flex-1 relative z-10">
         <Link href="/" className="flex items-center pl-2 mb-14 group">
           <div className="relative w-9 h-9 mr-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:shadow-indigo-500/50 transition-all duration-300">
@@ -65,7 +62,7 @@ export function Sidebar() {
                   whileTap={{ scale: 0.95 }}
                   className={cn(
                     "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-xl transition-all duration-200",
-                    isActive ? "text-indigo-700 bg-indigo-500/10 shadow-sm" : "text-muted-foreground hover:text-indigo-600 hover:bg-black/5"
+                    isActive ? "text-indigo-700 bg-indigo-50/80 shadow-sm ring-1 ring-indigo-100" : "text-slate-500 hover:text-indigo-600 hover:bg-slate-50"
                   )}
                 >
                   {isActive && (
