@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Briefcase, CreditCard, Settings } from "lucide-react";
+import { LayoutDashboard, Briefcase, CreditCard, Settings, Code } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
@@ -18,6 +18,12 @@ const routes = [
     icon: Briefcase,
     href: "/projects",
     color: "text-teal-500",
+  },
+  {
+    label: "Kho lưu trữ",
+    icon: Code,
+    href: "/repository",
+    color: "text-indigo-500",
   },
   {
     label: "Thanh toán",
