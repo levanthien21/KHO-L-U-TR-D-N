@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Plus, Code2, Copy, Search, Tag, Trash2, Check } from "lucide-react";
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { toast } from "sonner";
 
 export default function RepositoryPage() {
@@ -63,7 +63,7 @@ export default function RepositoryPage() {
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  const container = {
+  const container: Variants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
@@ -71,7 +71,7 @@ export default function RepositoryPage() {
     }
   };
 
-  const item = {
+  const item: Variants = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
   };
@@ -88,9 +88,9 @@ export default function RepositoryPage() {
         </div>
         
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger asChild>
+          <DialogTrigger>
             <Button className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-[0_0_20px_rgba(99,102,241,0.3)] border-none rounded-xl h-12 px-6">
-              <Plus className="mr-2 h-5 w-5" /> Thêm Code Mới
+              <div className="flex items-center"><Plus className="mr-2 h-5 w-5" /> Thêm Code Mới</div>
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[600px] bg-slate-900 border-white/10 text-slate-50 glass-panel">
