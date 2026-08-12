@@ -43,8 +43,8 @@ export default function Dashboard() {
     >
       <motion.div variants={item} className="flex justify-between items-end mb-10">
         <div>
-          <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-400 tracking-tight">Tổng quan</h1>
-          <p className="text-zinc-400 mt-2">Theo dõi tiến độ và dòng tiền của bạn.</p>
+          <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-blue-600 tracking-tight">Tổng quan</h1>
+          <p className="text-muted-foreground mt-2">Theo dõi tiến độ và dòng tiền của bạn.</p>
         </div>
       </motion.div>
       
@@ -52,10 +52,10 @@ export default function Dashboard() {
         <motion.div variants={item} className="premium-glow group">
           <Card className="glass-panel border-none h-full transition-transform duration-300 group-hover:-translate-y-1">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-indigo-300/80 uppercase tracking-wider">Dự án đang chạy</CardTitle>
+              <CardTitle className="text-sm font-medium text-indigo-700 uppercase tracking-wider">Dự án đang chạy</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold text-white tracking-tight">{totalActive}</div>
+              <div className="text-4xl font-bold text-foreground tracking-tight">{totalActive}</div>
             </CardContent>
           </Card>
         </motion.div>
@@ -63,10 +63,10 @@ export default function Dashboard() {
         <motion.div variants={item} className="premium-glow group">
           <Card className="glass-panel border-none h-full transition-transform duration-300 group-hover:-translate-y-1">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-emerald-300/80 uppercase tracking-wider">Dự án hoàn thành</CardTitle>
+              <CardTitle className="text-sm font-medium text-emerald-700 uppercase tracking-wider">Dự án hoàn thành</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold text-white tracking-tight">{totalCompleted}</div>
+              <div className="text-4xl font-bold text-foreground tracking-tight">{totalCompleted}</div>
             </CardContent>
           </Card>
         </motion.div>
@@ -74,10 +74,10 @@ export default function Dashboard() {
         <motion.div variants={item} className="premium-glow group">
           <Card className="glass-panel border-none h-full transition-transform duration-300 group-hover:-translate-y-1">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-rose-300/80 uppercase tracking-wider">Tiền chưa thu</CardTitle>
+              <CardTitle className="text-sm font-medium text-rose-700 uppercase tracking-wider">Tiền chưa thu</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold text-white tracking-tight">{totalPendingPayments.toLocaleString("vi-VN")} <span className="text-2xl text-zinc-500 font-normal">₫</span></div>
+              <div className="text-4xl font-bold text-foreground tracking-tight">{totalPendingPayments.toLocaleString("vi-VN")} <span className="text-2xl text-muted-foreground font-normal">₫</span></div>
             </CardContent>
           </Card>
         </motion.div>
@@ -85,23 +85,23 @@ export default function Dashboard() {
 
       <motion.div variants={item}>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-white tracking-tight">Sắp đến hạn & Quá hạn</h2>
+          <h2 className="text-2xl font-bold text-foreground tracking-tight">Sắp đến hạn & Quá hạn</h2>
         </div>
         <Card className="glass-panel border-none overflow-hidden">
           <Table>
-            <TableHeader className="bg-black/20">
-              <TableRow className="border-white/10 hover:bg-transparent">
-                <TableHead className="text-zinc-400 font-medium">Tên dự án</TableHead>
-                <TableHead className="text-zinc-400 font-medium">Khách hàng</TableHead>
-                <TableHead className="text-zinc-400 font-medium">Số tiền</TableHead>
-                <TableHead className="text-zinc-400 font-medium">Hạn chót</TableHead>
-                <TableHead className="text-zinc-400 font-medium">Trạng thái</TableHead>
+            <TableHeader className="bg-muted/50">
+              <TableRow className="border-border hover:bg-transparent">
+                <TableHead className="text-muted-foreground font-medium">Tên dự án</TableHead>
+                <TableHead className="text-muted-foreground font-medium">Khách hàng</TableHead>
+                <TableHead className="text-muted-foreground font-medium">Số tiền</TableHead>
+                <TableHead className="text-muted-foreground font-medium">Hạn chót</TableHead>
+                <TableHead className="text-muted-foreground font-medium">Trạng thái</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {upcomingProjects.length === 0 ? (
-                <TableRow className="border-white/5 hover:bg-white/5">
-                  <TableCell colSpan={5} className="text-center py-12 text-zinc-500">
+                <TableRow className="border-border hover:bg-muted/30">
+                  <TableCell colSpan={5} className="text-center py-12 text-muted-foreground">
                     Tuyệt vời! Không có dự án nào sắp đến hạn thanh toán.
                   </TableCell>
                 </TableRow>
@@ -111,16 +111,16 @@ export default function Dashboard() {
                   const isOverdue = isPast(dueDate) && !isToday(dueDate);
 
                   return (
-                    <TableRow key={project.id} className="border-white/5 hover:bg-white/5 transition-colors group">
-                      <TableCell className="font-semibold text-white">{project.name}</TableCell>
-                      <TableCell className="text-zinc-300">{project.clientName}</TableCell>
-                      <TableCell className="text-zinc-300 font-medium">{project.totalPrice.toLocaleString("vi-VN")} ₫</TableCell>
-                      <TableCell className={isOverdue ? "text-rose-400 font-semibold" : "text-zinc-300"}>
+                    <TableRow key={project.id} className="border-border hover:bg-muted/30 transition-colors group">
+                      <TableCell className="font-semibold text-foreground">{project.name}</TableCell>
+                      <TableCell className="text-muted-foreground">{project.clientName}</TableCell>
+                      <TableCell className="text-foreground font-medium">{project.totalPrice.toLocaleString("vi-VN")} ₫</TableCell>
+                      <TableCell className={isOverdue ? "text-rose-600 font-semibold" : "text-muted-foreground"}>
                         {format(dueDate, "dd/MM/yyyy", { locale: vi })}
                       </TableCell>
                       <TableCell>
                         <span className={`px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm border ${
-                          isOverdue ? "bg-rose-500/10 text-rose-400 border-rose-500/20" : "bg-amber-500/10 text-amber-400 border-amber-500/20"
+                          isOverdue ? "bg-rose-100 text-rose-600 border-rose-200" : "bg-amber-100 text-amber-600 border-amber-200"
                         }`}>
                           {isOverdue ? "Quá hạn" : "Sắp tới"}
                         </span>

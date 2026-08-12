@@ -11,25 +11,25 @@ const routes = [
     label: "Tổng quan",
     icon: LayoutDashboard,
     href: "/",
-    color: "text-sky-400",
+    color: "text-sky-600",
   },
   {
     label: "Dự án",
     icon: Briefcase,
     href: "/projects",
-    color: "text-violet-400",
+    color: "text-violet-600",
   },
   {
     label: "Thanh toán",
     icon: CreditCard,
     href: "/payments",
-    color: "text-emerald-400",
+    color: "text-emerald-600",
   },
   {
     label: "Cài đặt",
     icon: Settings,
     href: "/settings",
-    color: "text-zinc-400",
+    color: "text-slate-500",
   },
 ];
 
@@ -37,9 +37,9 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="space-y-4 py-6 flex flex-col h-full glass-sidebar text-white shadow-2xl relative overflow-hidden">
+    <div className="space-y-4 py-6 flex flex-col h-full glass-sidebar text-foreground shadow-2xl relative overflow-hidden">
       {/* Decorative gradient orb */}
-      <div className="absolute top-0 left-0 w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2" />
+      <div className="absolute top-0 left-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2" />
       
       <div className="px-4 py-2 flex-1 relative z-10">
         <Link href="/" className="flex items-center pl-2 mb-14 group">
@@ -47,7 +47,7 @@ export function Sidebar() {
             F
           </div>
           <h1 className="text-xl font-bold tracking-tight">
-            Freelance<span className="text-indigo-400">Dash</span>
+            Freelance<span className="text-indigo-600">Dash</span>
           </h1>
         </Link>
         <div className="space-y-2">
@@ -65,7 +65,7 @@ export function Sidebar() {
                   whileTap={{ scale: 0.95 }}
                   className={cn(
                     "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-xl transition-all duration-200",
-                    isActive ? "text-white bg-white/10 shadow-inner" : "text-zinc-400 hover:text-white hover:bg-white/5"
+                    isActive ? "text-indigo-700 bg-indigo-500/10 shadow-sm" : "text-muted-foreground hover:text-indigo-600 hover:bg-black/5"
                   )}
                 >
                   {isActive && (
