@@ -28,9 +28,6 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
   body {
     @apply bg-background text-foreground;
     background-image: radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.15), transparent 25%),
