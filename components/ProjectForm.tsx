@@ -98,7 +98,7 @@ export function ProjectForm({ projectToEdit, open, onOpenChange }: ProjectFormPr
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="status">Project Status</Label>
-              <Select value={status} onValueChange={(v: ProjectStatus) => setStatus(v)}>
+              <Select value={status} onValueChange={(v) => v && setStatus(v as ProjectStatus)}>
                 <SelectTrigger id="status"><SelectValue placeholder="Status" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Not Started">Not Started</SelectItem>
@@ -109,7 +109,7 @@ export function ProjectForm({ projectToEdit, open, onOpenChange }: ProjectFormPr
             </div>
             <div className="space-y-2">
               <Label htmlFor="paymentStatus">Payment Status</Label>
-              <Select value={paymentStatus} onValueChange={(v: PaymentStatus) => setPaymentStatus(v)}>
+              <Select value={paymentStatus} onValueChange={(v) => v && setPaymentStatus(v as PaymentStatus)}>
                 <SelectTrigger id="paymentStatus"><SelectValue placeholder="Payment Status" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Unpaid">Unpaid</SelectItem>
