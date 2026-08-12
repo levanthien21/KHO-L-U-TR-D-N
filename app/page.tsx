@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { format, isPast, isToday, parseISO } from "date-fns";
 import { vi } from "date-fns/locale";
 import { motion, Variants } from "framer-motion";
+import { RevenueChart } from "@/components/RevenueChart";
 
 const container: Variants = {
   hidden: { opacity: 0 },
@@ -90,6 +91,10 @@ export default function Dashboard() {
             </CardContent>
           </Card>
         </motion.div>
+      </motion.div>
+
+      <motion.div variants={item} className="mb-12">
+        <RevenueChart />
       </motion.div>
 
       <motion.div variants={item}>

@@ -12,6 +12,7 @@ import { format } from "date-fns";
 import { vi } from "date-fns/locale";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { toast } from "sonner";
+import Editor from "@monaco-editor/react";
 
 export default function RepositoryPage() {
   const { snippets, addSnippet, deleteSnippet } = useRepository();
@@ -143,14 +144,20 @@ export default function RepositoryPage() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="code" className="text-slate-300">Nội dung Code</Label>
-                <textarea 
-                  id="code" 
-                  value={code} 
-                  onChange={(e) => setCode(e.target.value)} 
-                  placeholder="Paste đoạn code của bạn vào đây..."
-                  className="w-full min-h-[200px] p-3 rounded-md bg-slate-950 border border-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-300 font-mono text-sm resize-y"
-                  required
-                />
+                <div className="border border-white/10 rounded-md overflow-hidden h-[300px]">
+                  <Editor
+                    height="100%"
+                    language={language || "javascript"}
+                    theme="vs-dark"
+                    value={code}
+                    onChange={(value) => setCode(value || "")}
+                    options={{
+                      minimap: { enabled: false },
+                      fontSize: 14,
+                      scrollBeyondLastLine: false,
+                    }}
+                  />
+                </div>
               </div>
               <div className="flex justify-end pt-4">
                 <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-8">

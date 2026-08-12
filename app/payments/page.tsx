@@ -9,9 +9,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogD
 import { Project } from "@/types";
 import { format, parseISO, isPast, isToday } from "date-fns";
 import { vi } from "date-fns/locale";
-import { Bell, Copy, CheckCircle2 } from "lucide-react";
+import { Bell, Copy, CheckCircle2, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { motion, Variants } from "framer-motion";
+import { generateInvoice } from "@/lib/pdfGenerator";
 
 const container: Variants = {
   hidden: { opacity: 0 },
@@ -133,7 +134,14 @@ Trân trọng,
                         </span>
                       </TableCell>
                       <TableCell className="text-right">
-                        <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity flex justify-end gap-2">
+                          <Button 
+                            onClick={() => generateInvoice(project)}
+                            size="sm"
+                            className="bg-sky-600/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/30 rounded-lg shadow-lg transition-all"
+                          >
+                            <FileText className="h-4 w-4" />
+                          </Button>
                           <Button 
                             onClick={() => handleGenerateReminder(project)}
                             size="sm"
