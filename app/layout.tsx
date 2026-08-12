@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} min-h-screen bg-slate-50 text-slate-900 flex overflow-hidden selection:bg-indigo-100 selection:text-indigo-900`}>
+      <body className={`${inter.className} min-h-screen bg-slate-900 text-slate-50 flex overflow-hidden selection:bg-sky-500/30 selection:text-sky-200`}>
         <ProjectProvider>
           <div className="w-64 h-full hidden md:block z-10 relative">
             <Sidebar />
@@ -27,7 +27,7 @@ export default function RootLayout({
           <main className="flex-1 overflow-y-auto relative z-0">
             {children}
           </main>
-          <Toaster richColors position="top-right" theme="light" />
+          <Toaster richColors position="top-right" theme="dark" />
         </ProjectProvider>
       </body>
     </html>
