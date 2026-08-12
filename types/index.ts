@@ -1,5 +1,5 @@
-export type ProjectStatus = 'Not Started' | 'In Progress' | 'Completed';
-export type PaymentStatus = 'Unpaid' | 'Partial' | 'Paid';
+export type ProjectStatus = 'Chưa bắt đầu' | 'Đang tiến hành' | 'Đã hoàn thành';
+export type PaymentStatus = 'Chưa thanh toán' | 'Thanh toán một phần' | 'Đã thanh toán';
 
 export interface Project {
   id: string;

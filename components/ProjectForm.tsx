@@ -21,11 +21,14 @@ export function ProjectForm({ projectToEdit, open, onOpenChange }: ProjectFormPr
   const [name, setName] = useState(projectToEdit?.name || "");
   const [clientName, setClientName] = useState(projectToEdit?.clientName || "");
   const [clientContact, setClientContact] = useState(projectToEdit?.clientContact || "");
-  const [totalPrice, setTotalPrice] = useState(projectToEdit?.totalPrice.toString() || "");
-  const [status, setStatus] = useState<ProjectStatus>(projectToEdit?.status || "Not Started");
-  const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>(projectToEdit?.paymentStatus || "Unpaid");
   
-  // Format date for input type="date"
+  const [totalPriceStr, setTotalPriceStr] = useState(
+    projectToEdit?.totalPrice ? projectToEdit.totalPrice.toString() : ""
+  );
+  
+  const [status, setStatus] = useState<ProjectStatus>(projectToEdit?.status || "Chưa bắt đầu");
+  const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>(projectToEdit?.paymentStatus || "Chưa thanh toán");
+  
   const defaultDate = projectToEdit?.paymentDueDate 
     ? new Date(projectToEdit.paymentDueDate).toISOString().split('T')[0] 
     : new Date().toISOString().split('T')[0];
@@ -33,13 +36,14 @@ export function ProjectForm({ projectToEdit, open, onOpenChange }: ProjectFormPr
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const rawPrice = parseFloat(totalPriceStr.replace(/,/g, '')) || 0;
     
     if (projectToEdit) {
       updateProject(projectToEdit.id, {
         name,
         clientName,
         clientContact,
-        totalPrice: parseFloat(totalPrice) || 0,
+        totalPrice: rawPrice,
         status,
         paymentStatus,
         paymentDueDate: new Date(paymentDueDate).toISOString(),
@@ -50,7 +54,7 @@ export function ProjectForm({ projectToEdit, open, onOpenChange }: ProjectFormPr
         name,
         clientName,
         clientContact,
-        totalPrice: parseFloat(totalPrice) || 0,
+        totalPrice: rawPrice,
         status,
         paymentStatus,
         paymentDueDate: new Date(paymentDueDate).toISOString(),
@@ -63,66 +67,75 @@ export function ProjectForm({ projectToEdit, open, onOpenChange }: ProjectFormPr
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] bg-[#0f111a] border-white/10 text-white shadow-2xl">
         <DialogHeader>
-          <DialogTitle>{projectToEdit ? "Edit Project" : "Add New Project"}</DialogTitle>
+          <DialogTitle className="text-xl font-bold">{projectToEdit ? "Sửa Dự Án" : "Thêm Dự Án Mới"}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Project Name</Label>
-            <Input id="name" value={name} onChange={(e) => setName(e.target.value)} required />
+            <Label htmlFor="name" className="text-zinc-300">Tên dự án</Label>
+            <Input id="name" value={name} onChange={(e) => setName(e.target.value)} required className="bg-white/5 border-white/10 text-white focus-visible:ring-indigo-500" />
           </div>
           
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="clientName">Client Name</Label>
-              <Input id="clientName" value={clientName} onChange={(e) => setClientName(e.target.value)} required />
+              <Label htmlFor="clientName" className="text-zinc-300">Tên khách hàng</Label>
+              <Input id="clientName" value={clientName} onChange={(e) => setClientName(e.target.value)} required className="bg-white/5 border-white/10 text-white focus-visible:ring-indigo-500" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="clientContact">Client Contact</Label>
-              <Input id="clientContact" value={clientContact} onChange={(e) => setClientContact(e.target.value)} required />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="totalPrice">Total Price ($)</Label>
-              <Input id="totalPrice" type="number" min="0" step="0.01" value={totalPrice} onChange={(e) => setTotalPrice(e.target.value)} required />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="paymentDueDate">Payment Due Date</Label>
-              <Input id="paymentDueDate" type="date" value={paymentDueDate} onChange={(e) => setPaymentDueDate(e.target.value)} required />
+              <Label htmlFor="clientContact" className="text-zinc-300">SĐT / Email</Label>
+              <Input id="clientContact" value={clientContact} onChange={(e) => setClientContact(e.target.value)} required className="bg-white/5 border-white/10 text-white focus-visible:ring-indigo-500" />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="status">Project Status</Label>
+              <Label htmlFor="totalPrice" className="text-zinc-300">Tổng tiền (VNĐ)</Label>
+              <Input 
+                id="totalPrice" 
+                type="number" 
+                min="0" 
+                step="1000"
+                value={totalPriceStr} 
+                onChange={(e) => setTotalPriceStr(e.target.value)} 
+                required 
+                className="bg-white/5 border-white/10 text-white focus-visible:ring-indigo-500"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="paymentDueDate" className="text-zinc-300">Hạn thanh toán</Label>
+              <Input id="paymentDueDate" type="date" value={paymentDueDate} onChange={(e) => setPaymentDueDate(e.target.value)} required className="bg-white/5 border-white/10 text-white focus-visible:ring-indigo-500 [color-scheme:dark]" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="status" className="text-zinc-300">Trạng thái dự án</Label>
               <Select value={status} onValueChange={(v) => v && setStatus(v as ProjectStatus)}>
-                <SelectTrigger id="status"><SelectValue placeholder="Status" /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Not Started">Not Started</SelectItem>
-                  <SelectItem value="In Progress">In Progress</SelectItem>
-                  <SelectItem value="Completed">Completed</SelectItem>
+                <SelectTrigger id="status" className="bg-white/5 border-white/10 text-white focus:ring-indigo-500"><SelectValue placeholder="Chọn trạng thái" /></SelectTrigger>
+                <SelectContent className="bg-[#1a1d2d] border-white/10 text-white">
+                  <SelectItem value="Chưa bắt đầu" className="focus:bg-white/10 focus:text-white">Chưa bắt đầu</SelectItem>
+                  <SelectItem value="Đang tiến hành" className="focus:bg-white/10 focus:text-white">Đang tiến hành</SelectItem>
+                  <SelectItem value="Đã hoàn thành" className="focus:bg-white/10 focus:text-white">Đã hoàn thành</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="paymentStatus">Payment Status</Label>
+              <Label htmlFor="paymentStatus" className="text-zinc-300">Trạng thái thanh toán</Label>
               <Select value={paymentStatus} onValueChange={(v) => v && setPaymentStatus(v as PaymentStatus)}>
-                <SelectTrigger id="paymentStatus"><SelectValue placeholder="Payment Status" /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Unpaid">Unpaid</SelectItem>
-                  <SelectItem value="Partial">Partial</SelectItem>
-                  <SelectItem value="Paid">Paid</SelectItem>
+                <SelectTrigger id="paymentStatus" className="bg-white/5 border-white/10 text-white focus:ring-indigo-500"><SelectValue placeholder="Chọn thanh toán" /></SelectTrigger>
+                <SelectContent className="bg-[#1a1d2d] border-white/10 text-white">
+                  <SelectItem value="Chưa thanh toán" className="focus:bg-white/10 focus:text-white">Chưa thanh toán</SelectItem>
+                  <SelectItem value="Thanh toán một phần" className="focus:bg-white/10 focus:text-white">Thanh toán một phần</SelectItem>
+                  <SelectItem value="Đã thanh toán" className="focus:bg-white/10 focus:text-white">Đã thanh toán</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
 
-          <DialogFooter className="mt-4">
-            <Button type="submit" className="w-full">
-              {projectToEdit ? "Save Changes" : "Create Project"}
+          <DialogFooter className="mt-6">
+            <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl shadow-lg hover:shadow-indigo-500/25 transition-all">
+              {projectToEdit ? "Lưu Thay Đổi" : "Tạo Dự Án"}
             </Button>
           </DialogFooter>
         </form>

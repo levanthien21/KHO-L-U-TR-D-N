@@ -4,31 +4,32 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, Briefcase, CreditCard, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 const routes = [
   {
-    label: "Dashboard",
+    label: "Tổng quan",
     icon: LayoutDashboard,
     href: "/",
-    color: "text-sky-500",
+    color: "text-sky-400",
   },
   {
-    label: "Projects",
+    label: "Dự án",
     icon: Briefcase,
     href: "/projects",
-    color: "text-violet-500",
+    color: "text-violet-400",
   },
   {
-    label: "Payments",
+    label: "Thanh toán",
     icon: CreditCard,
     href: "/payments",
-    color: "text-emerald-500",
+    color: "text-emerald-400",
   },
   {
-    label: "Settings",
+    label: "Cài đặt",
     icon: Settings,
     href: "/settings",
-    color: "text-gray-500",
+    color: "text-zinc-400",
   },
 ];
 
@@ -36,32 +37,51 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="space-y-4 py-4 flex flex-col h-full bg-[#111827] text-white">
-      <div className="px-3 py-2 flex-1">
-        <Link href="/" className="flex items-center pl-3 mb-14">
-          <div className="relative w-8 h-8 mr-4 bg-white rounded-full flex items-center justify-center text-black font-bold">
+    <div className="space-y-4 py-6 flex flex-col h-full glass-sidebar text-white shadow-2xl relative overflow-hidden">
+      {/* Decorative gradient orb */}
+      <div className="absolute top-0 left-0 w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2" />
+      
+      <div className="px-4 py-2 flex-1 relative z-10">
+        <Link href="/" className="flex items-center pl-2 mb-14 group">
+          <div className="relative w-9 h-9 mr-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:shadow-indigo-500/50 transition-all duration-300">
             F
           </div>
-          <h1 className="text-2xl font-bold">
-            Freelance<span className="text-blue-500">Dash</span>
+          <h1 className="text-xl font-bold tracking-tight">
+            Freelance<span className="text-indigo-400">Dash</span>
           </h1>
         </Link>
-        <div className="space-y-1">
-          {routes.map((route) => (
-            <Link
-              key={route.href}
-              href={route.href}
-              className={cn(
-                "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition",
-                pathname === route.href ? "text-white bg-white/10" : "text-zinc-400"
-              )}
-            >
-              <div className="flex items-center flex-1">
-                <route.icon className={cn("h-5 w-5 mr-3", route.color)} />
-                {route.label}
-              </div>
-            </Link>
-          ))}
+        <div className="space-y-2">
+          {routes.map((route) => {
+            const isActive = pathname === route.href;
+            
+            return (
+              <Link
+                key={route.href}
+                href={route.href}
+                className="block relative"
+              >
+                <motion.div 
+                  whileHover={{ x: 5 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={cn(
+                    "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-xl transition-all duration-200",
+                    isActive ? "text-white bg-white/10 shadow-inner" : "text-zinc-400 hover:text-white hover:bg-white/5"
+                  )}
+                >
+                  {isActive && (
+                    <motion.div 
+                      layoutId="active-nav"
+                      className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-indigo-500 rounded-r-full"
+                    />
+                  )}
+                  <div className="flex items-center flex-1 z-10 pl-1">
+                    <route.icon className={cn("h-5 w-5 mr-3 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3", route.color)} />
+                    {route.label}
+                  </div>
+                </motion.div>
+              </Link>
+            )
+          })}
         </div>
       </div>
     </div>
