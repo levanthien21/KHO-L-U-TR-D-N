@@ -20,5 +20,7 @@ export interface Snippet {
   code: string;
   language: string;
   tags: string[];
+  fileUrl?: string;
+  fileName?: string;
   createdAt: string;
 }

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Plus, Code2, Copy, Search, Tag, Trash2, Check } from "lucide-react";
+import { Plus, Code2, Copy, Search, Tag, Trash2, Check, Upload, FileArchive, Download } from "lucide-react";
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
 import { motion, AnimatePresence, Variants } from "framer-motion";
@@ -19,6 +19,10 @@ export default function RepositoryPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [uploadFile, setUploadFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   // Form states
   const [title, setTitle] = useState("");
@@ -57,6 +61,49 @@ export default function RepositoryPage() {
     setTags("");
   };
 
+  const handleUpload = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!uploadFile) return;
+
+    setIsUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", uploadFile);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        addSnippet({
+          id: Date.now().toString(),
+          title: title || data.fileName,
+          description,
+          code: "",
+          language: "file",
+          tags: tags.split(",").map(t => t.trim()).filter(Boolean),
+          fileUrl: data.fileUrl,
+          fileName: data.fileName,
+          createdAt: new Date().toISOString()
+        });
+        toast.success("Đã tải lên file thành công");
+        setIsUploadOpen(false);
+        setUploadFile(null);
+        setTitle("");
+        setDescription("");
+        setTags("");
+      } else {
+        toast.error("Lỗi khi tải file: " + (data.error || "Unknown error"));
+      }
+    } catch (err) {
+      toast.error("Lỗi kết nối khi tải file");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   const handleCopy = (code: string, id: string) => {
     navigator.clipboard.writeText(code);
     setCopiedId(id);
@@ -88,12 +135,73 @@ export default function RepositoryPage() {
           <p className="text-slate-400 mt-2">Quản lý và sử dụng lại các đoạn code, thư viện của bạn.</p>
         </div>
         
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger>
-            <Button className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-[0_0_20px_rgba(99,102,241,0.3)] border-none rounded-xl h-12 px-6">
-              <div className="flex items-center"><Plus className="mr-2 h-5 w-5" /> Thêm Code Mới</div>
-            </Button>
-          </DialogTrigger>
+        <div className="flex gap-3">
+          <Dialog open={isUploadOpen} onOpenChange={setIsUploadOpen}>
+            <DialogTrigger>
+              <Button variant="outline" className="border-indigo-500/50 text-indigo-300 hover:bg-indigo-500/10 rounded-xl h-12 px-6 shadow-[0_0_15px_rgba(99,102,241,0.15)]">
+                <div className="flex items-center"><Upload className="mr-2 h-5 w-5" /> Tải lên File (.zip)</div>
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[500px] bg-slate-900 border-white/10 text-slate-50 glass-panel">
+              <DialogHeader>
+                <DialogTitle className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400">Tải lên File Công Cụ</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleUpload} className="space-y-5 mt-4">
+                <div className="space-y-2">
+                  <Label htmlFor="file" className="text-slate-300">Chọn File (ưu tiên .zip)</Label>
+                  <Input 
+                    id="file" 
+                    type="file"
+                    onChange={(e) => setUploadFile(e.target.files?.[0] || null)} 
+                    className="bg-slate-800/50 border-white/10 file:text-slate-300 file:bg-slate-700 file:border-none file:rounded-md file:px-4 file:py-1 cursor-pointer"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="uploadTitle" className="text-slate-300">Tiêu đề (tuỳ chọn)</Label>
+                  <Input 
+                    id="uploadTitle" 
+                    value={title} 
+                    onChange={(e) => setTitle(e.target.value)} 
+                    placeholder="Tên công cụ..."
+                    className="bg-slate-800/50 border-white/10 focus-visible:ring-indigo-500"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="uploadDesc" className="text-slate-300">Mô tả (tuỳ chọn)</Label>
+                  <Input 
+                    id="uploadDesc" 
+                    value={description} 
+                    onChange={(e) => setDescription(e.target.value)} 
+                    placeholder="Mô tả công cụ..."
+                    className="bg-slate-800/50 border-white/10 focus-visible:ring-indigo-500"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="uploadTags" className="text-slate-300">Tags (tuỳ chọn, cách nhau bởi dấu phẩy)</Label>
+                  <Input 
+                    id="uploadTags" 
+                    value={tags} 
+                    onChange={(e) => setTags(e.target.value)} 
+                    placeholder="tool, zip, app"
+                    className="bg-slate-800/50 border-white/10 focus-visible:ring-indigo-500"
+                  />
+                </div>
+                <div className="flex justify-end pt-4">
+                  <Button type="submit" disabled={isUploading || !uploadFile} className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-8">
+                    {isUploading ? "Đang tải lên..." : "Tải lên"}
+                  </Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
+
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger>
+              <Button className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-[0_0_20px_rgba(99,102,241,0.3)] border-none rounded-xl h-12 px-6">
+                <div className="flex items-center"><Plus className="mr-2 h-5 w-5" /> Thêm Code Mới</div>
+              </Button>
+            </DialogTrigger>
           <DialogContent className="sm:max-w-[600px] bg-slate-900 border-white/10 text-slate-50 glass-panel">
             <DialogHeader>
               <DialogTitle className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">Thêm Snippet Mới</DialogTitle>
@@ -167,6 +275,7 @@ export default function RepositoryPage() {
             </form>
           </DialogContent>
         </Dialog>
+        </div>
       </motion.div>
 
       <div className="mb-8 relative max-w-xl">
@@ -208,22 +317,36 @@ export default function RepositoryPage() {
                     </div>
                   </CardHeader>
                   <CardContent className="flex-1 flex flex-col">
-                    <div className="relative group/code flex-1 rounded-lg overflow-hidden bg-[#0d1117] border border-white/5">
-                      <div className="flex items-center justify-between px-3 py-1.5 bg-[#161b22] border-b border-white/5 text-xs text-slate-400 font-medium uppercase tracking-wider">
-                        <span>{snippet.language || "text"}</span>
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="h-6 w-6 text-slate-400 hover:text-white hover:bg-white/10 rounded" 
-                          onClick={() => handleCopy(snippet.code, snippet.id)}
-                        >
-                          {copiedId === snippet.id ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
-                        </Button>
+                    {snippet.fileUrl ? (
+                      <div className="relative flex-1 rounded-lg bg-indigo-500/5 border border-indigo-500/20 flex flex-col items-center justify-center p-6 text-center group/file">
+                        <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 flex items-center justify-center mb-4 group-hover/file:scale-110 transition-transform duration-300">
+                          <FileArchive className="w-8 h-8 text-indigo-400" />
+                        </div>
+                        <h4 className="text-slate-200 font-medium mb-1 line-clamp-1 w-full" title={snippet.fileName}>{snippet.fileName}</h4>
+                        <p className="text-sm text-slate-500 mb-6">File nén đính kèm</p>
+                        <a href={snippet.fileUrl} download className="inline-flex items-center justify-center rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-4 py-2 text-sm font-medium text-indigo-300 hover:bg-indigo-500/20 transition-colors">
+                          <Download className="w-4 h-4 mr-2" />
+                          Tải Xuống Ngay
+                        </a>
                       </div>
-                      <div className="p-4 overflow-auto max-h-[200px] text-sm font-mono text-slate-300 custom-scrollbar">
-                        <pre><code>{snippet.code}</code></pre>
+                    ) : (
+                      <div className="relative group/code flex-1 rounded-lg overflow-hidden bg-[#0d1117] border border-white/5">
+                        <div className="flex items-center justify-between px-3 py-1.5 bg-[#161b22] border-b border-white/5 text-xs text-slate-400 font-medium uppercase tracking-wider">
+                          <span>{snippet.language || "text"}</span>
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            className="h-6 w-6 text-slate-400 hover:text-white hover:bg-white/10 rounded" 
+                            onClick={() => handleCopy(snippet.code, snippet.id)}
+                          >
+                            {copiedId === snippet.id ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
+                          </Button>
+                        </div>
+                        <div className="p-4 overflow-auto max-h-[200px] text-sm font-mono text-slate-300 custom-scrollbar">
+                          <pre><code>{snippet.code}</code></pre>
+                        </div>
                       </div>
-                    </div>
+                    )}
                     
                     <div className="mt-4 flex items-center justify-between">
                       <div className="flex flex-wrap gap-2">
