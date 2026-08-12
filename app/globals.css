@@ -29,7 +29,8 @@
 
 @layer base {
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
     background-image: radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.15), transparent 25%),
                       radial-gradient(circle at 85% 30%, rgba(29, 78, 216, 0.15), transparent 25%);
     background-attachment: fixed;
@@ -38,21 +39,41 @@
 
 /* Glassmorphism Utilities */
 .glass {
-  @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-xl;
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 .glass-panel {
-  @apply bg-[#0a0a0a]/60 backdrop-blur-xl border border-white/5 shadow-2xl;
+  background-color: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 .glass-sidebar {
-  @apply bg-[#0f111a]/80 backdrop-blur-2xl border-r border-white/5;
+  background-color: rgba(15, 17, 26, 0.8);
+  backdrop-filter: blur(40px);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
 }
 .premium-glow {
-  @apply relative;
+  position: relative;
 }
 .premium-glow::before {
   content: '';
-  @apply absolute -inset-0.5 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-lg blur opacity-0 transition duration-500 group-hover:opacity-30;
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  bottom: -2px;
+  left: -2px;
+  background-image: linear-gradient(to right, #7c3aed, #4f46e5);
+  border-radius: 0.5rem;
+  filter: blur(8px);
+  opacity: 0;
+  transition: opacity 500ms;
   z-index: -1;
+}
+.premium-glow:hover::before {
+  opacity: 0.3;
 }
 
 /* Custom Scrollbar */

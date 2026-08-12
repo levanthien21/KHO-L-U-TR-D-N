@@ -5,15 +5,15 @@ import { useProjects } from "../context/ProjectContext";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
-import { Plus, Edit, Trash2 } from "lucide-react";
+import { Plus, Edit, Trash2, Briefcase } from "lucide-react";
 import { ProjectForm } from "@/components/ProjectForm";
 import { Project } from "@/types";
 import { format, parseISO } from "date-fns";
 import { vi } from "date-fns/locale";
 import { toast } from "sonner";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
-const container = {
+const container: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -21,7 +21,7 @@ const container = {
   }
 };
 
-const item = {
+const item: Variants = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
 };
