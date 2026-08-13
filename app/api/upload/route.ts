@@ -13,6 +13,7 @@ export async function POST(request: NextRequest) {
     // Tải file trực tiếp lên Vercel Blob Cloud
     const blob = await put(file.name, file, {
       access: 'public',
+      token: process.env.BLOB_READ_WRITE_TOKEN,
       // Có thể thêm tính năng tự động tạo UUID tránh trùng lặp tên nếu cần: 
       // addRandomSuffix: true (mặc định đã là true)
     });
