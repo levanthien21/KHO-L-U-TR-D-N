@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
-import { existsSync } from "fs";
+import { put } from "@vercel/blob";
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,31 +10,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: "No file uploaded" }, { status: 400 });
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    // Ensure the uploads directory exists
-    const uploadDir = join(process.cwd(), "public", "uploads", "tools");
-    if (!existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true });
-    }
-
-    // Save the file
-    // To prevent overwriting and handle filenames safely, we can prepend a timestamp
-    const safeFilename = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
-    const path = join(uploadDir, safeFilename);
-
-    await writeFile(path, buffer);
+    // Tải file trực tiếp lên Vercel Blob Cloud
+    const blob = await put(file.name, file, {
+      access: 'public',
+      // Có thể thêm tính năng tự động tạo UUID tránh trùng lặp tên nếu cần: 
+      // addRandomSuffix: true (mặc định đã là true)
+    });
 
     return NextResponse.json({ 
       success: true, 
       message: "File uploaded successfully",
-      fileUrl: `/uploads/tools/${safeFilename}`,
+      fileUrl: blob.url,
       fileName: file.name
     });
 
-  } catch (error) {
-    console.error("Error uploading file:", error);
-    return NextResponse.json({ success: false, error: "Failed to upload file" }, { status: 500 });
+  } catch (error: any) {
+    console.error("Error uploading file to Vercel Blob:", error);
+    return NextResponse.json({ 
+      success: false, 
+      error: error?.message || "Failed to upload file. Please check BLOB_READ_WRITE_TOKEN." 
+    }, { status: 500 });
   }
 }
